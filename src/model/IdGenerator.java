@@ -5,5 +5,4 @@ public class IdGenerator {
     public int generateId(){
         return ++taskCounter;
     }
-
 }

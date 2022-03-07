@@ -14,7 +14,6 @@ public class Menu {
     private Manager manager = new Manager();
 
     public static void println(String message) {
-
         System.out.println(message);
     }
 
@@ -79,6 +78,7 @@ public class Menu {
                 manager.getEpicById(id);
                 manager.getSubTaskById(id);
             }
+
             if (command == 5) {
                 println("Введите id задачи");
                 int id = scanner.nextInt();
