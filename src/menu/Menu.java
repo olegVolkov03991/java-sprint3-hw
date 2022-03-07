@@ -1,21 +1,17 @@
 package menu;
 
-import typeTasks.Epic;
-import typeTasks.SubTask;
-import typeTasks.Task;
-import service.manager;
+import service.Manager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
 
-
-    Scanner scanner = new Scanner(System.in);
-    manager manager = new manager();
-    Map tasks = manager.getTasks();
-    Map epics = manager.getEpics();
-    Map subTasks = manager.getSubTasks();
+    private Scanner scanner = new Scanner(System.in);
+    private Manager manager = new Manager();
 
     public static void println(String message) {
 
@@ -54,7 +50,7 @@ public class Menu {
                     case 3:
                         println("Введите id эпика");
                         int id = scanner.nextInt();
-                        println("Задача создана!");
+                        manager.makeSubTask(name, description, id);
                         break;
                     default:
                         println("Такого эпика нет");
@@ -63,11 +59,11 @@ public class Menu {
 
             if (command == 2) {
                 println("Список задач:");
-                System.out.println(manager.getTasc(tasks));
+                System.out.println(manager.getTasks());
                 println("Список эпиков:");
-                System.out.println(manager.getEpic(epics));
+                System.out.println(manager.getEpics());
                 println("Список под_задач:");
-                System.out.println(manager.getSubTask(subTasks));
+                System.out.println(manager.getSubTasks());
             }
 
             if (command == 3) {
@@ -118,7 +114,7 @@ public class Menu {
                 status = status;
                 Task task = new Task(name, description, id, status);
                 SubTask subTask = new SubTask(name, description, id, status);
-                Epic epic = new Epic(name, description, id);
+                Epic epic = new Epic(name, description, id, status, (List<SubTask>) subTask);
                 manager.updateTaskById(task);
                 manager.updateSubTaskById(subTask);
                 manager.updateEpicById(epic);
@@ -128,6 +124,7 @@ public class Menu {
 
                 println("Введите id эпика");
                 int id = scanner.nextInt();
+                manager.getEpicOdSubTask(id);
             }
         }
     }

@@ -1,12 +1,29 @@
-package typeTasks;
+package model;
 
 import java.util.Objects;
 
 public class Task {
+    //idGenerator idGen = new idGenerator(id);
+
     private String name;
     private String description;
     private int id;
     private String status;
+
+///   public Task() {
+//    }
+
+    public Task(String name, String description, int id, String status) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+    }
+
+    public Task() {
+
+    }
+
 
     public String getName() {
         return name;
@@ -24,7 +41,7 @@ public class Task {
         this.description = description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -37,17 +54,6 @@ public class Task {
     }
 
     public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Task() {
-
-    }
-
-    public Task(String name, String description, int id, String status) {
-        this.name = name;
-        this.description = description;
-        this.id = id;
         this.status = status;
     }
 

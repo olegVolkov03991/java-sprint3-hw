@@ -1,22 +1,24 @@
-package typeTasks;
+package model;
 
 public class SubTask extends Task {
-    int epicNumber;
+   private int epicId;
+
+    public SubTask() {
+
+    }
+
 
     public int getEpicNumber() {
-        return epicNumber;
+        return epicId;
     }
 
     public void setEpicNumber(int epicNumber) {
-        this.epicNumber = epicNumber;
-    }
-
-    public SubTask() {
+        this.epicId = epicNumber;
     }
 
     public SubTask(String name, String description, int id, String status) {
         super(name, description, id, status);
-        this.epicNumber = epicNumber;
+        this.epicId = epicId;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class SubTask extends Task {
         } else {
             result = result + ", description= null ";
         }
-        result = result + ", id=" + getId() + ", " + "epicNumber" + epicNumber
+        result = result + ", id=" + getId() + ", " + "epicId" + epicId
                 + ", status= " + getStatus() + '\'';
         return result;
     }
