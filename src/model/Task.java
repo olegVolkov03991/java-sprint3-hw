@@ -16,11 +16,6 @@ public class Task {
         this.status = status;
     }
 
-    public Task() {
-
-    }
-
-
     public String getName() {
         return name;
     }

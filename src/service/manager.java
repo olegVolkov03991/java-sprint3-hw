@@ -6,14 +6,14 @@ import model.IdGenerator;
 import java.util.*;
 
 import static model.Status.*;
+import static model.Printer.*;
 
 public class Manager {
-
-    private IdGenerator idGenerator = new IdGenerator();
 
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
+    private IdGenerator idGenerator = new IdGenerator();
 
     public Map<Integer, Task> getTasks() {
         return tasks;
@@ -27,38 +27,22 @@ public class Manager {
         return subTasks;
     }
 
-    public static void println(String message) {
-        System.out.println(message);
-    }
-
     public Task makeTask(String name, String description) {
-        Task task = new Task();
-        task.setName(name);
-        task.setDescription(description);
-        task.setId(idGenerator.generateId());
-        task.setStatus("NEW");
+         Task task = new Task(name, description, idGenerator.generateId(), "NEW");
         tasks.put(task.getId(), task);
         println("Задача создана, ее название" + name);
         return task;
     }
 
     public Epic makeEpic(String name, String description) {
-        Epic epic = new Epic();
-        epic.setName(name);
-        epic.setDescription(description);
-        epic.setId(idGenerator.generateId());
-        epic.setStatus("NEW");
+        Epic epic = new Epic(name, description, idGenerator.generateId(), "NEW", (List<SubTask>) subTasks);
         epics.put(epic.getId(), epic);
         println("Эпик создан, его название" + name);
         return epic;
     }
 
     public SubTask makeSubTask(String name, String description, int id) {
-        SubTask subTask = new SubTask();
-        subTask.setName(name);
-        subTask.setDescription(description);
-        subTask.setEpicNumber(id);
-        subTask.setStatus("NEW");
+        SubTask subTask = new SubTask(name, description, id, "NEW");
         subTasks.put(subTask.getId(), subTask);
         Set<Integer> setKeysTask = epics.keySet();
         if (setKeysTask.size() == 0) {
@@ -131,7 +115,6 @@ public class Manager {
             subTaskList.add(subTask);
         }
         return subTaskList;
-
     }
 
     public void deleteTask() {

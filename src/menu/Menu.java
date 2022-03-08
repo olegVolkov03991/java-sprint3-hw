@@ -1,9 +1,7 @@
 package menu;
 
+import model.*;
 import service.Manager;
-import model.Epic;
-import model.SubTask;
-import model.Task;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +10,7 @@ public class Menu {
 
     private Scanner scanner = new Scanner(System.in);
     private Manager manager = new Manager();
+    private IdGenerator idGenerator = new IdGenerator();
 
     public static void println(String message) {
         System.out.println(message);
@@ -42,7 +41,6 @@ public class Menu {
                     case 1:
                         manager.makeTask(name, description);
                         break;
-
                     case 2:
                         manager.makeEpic(name, description);
                         break;
@@ -121,7 +119,6 @@ public class Menu {
             }
 
             if (command == 7) {
-
                 println("Введите id эпика");
                 int id = scanner.nextInt();
                 manager.getEpicOdSubTask(id);
@@ -129,7 +126,3 @@ public class Menu {
         }
     }
 }
-
-
-
-

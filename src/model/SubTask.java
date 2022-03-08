@@ -1,12 +1,8 @@
 package model;
 
 public class SubTask extends Task {
-   private int epicId;
 
-    public SubTask() {
-
-    }
-
+    private int epicId;
 
     public int getEpicNumber() {
         return epicId;
