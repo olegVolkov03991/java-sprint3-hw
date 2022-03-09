@@ -1,6 +1,7 @@
 package menu;
 
 import model.*;
+import service.IdGenerator;
 import service.Manager;
 
 import java.util.List;
@@ -17,9 +18,7 @@ public class Menu {
     }
 
     public void printMenu() {
-
         while (true) {
-
             println("1 - Создать задачу");
             println("2 - Вывести список  задач");
             println("3 - Удаление всех задач");
@@ -39,15 +38,15 @@ public class Menu {
                 int type = scanner.nextInt();
                 switch (type) {
                     case 1:
-                        manager.makeTask(name, description);
+                        manager.createTask(name, description);
                         break;
                     case 2:
-                        manager.makeEpic(name, description);
+                        manager.createEpic(name, description);
                         break;
                     case 3:
                         println("Введите id эпика");
                         int id = scanner.nextInt();
-                        manager.makeSubTask(name, description, id);
+                        manager.createSubTask(name, description, id);
                         break;
                     default:
                         println("Такого эпика нет");
@@ -93,17 +92,17 @@ public class Menu {
                 println("Введите новое описание");
                 String description = scanner.next();
                 println("Выберете новый статус: 1 - NEW, 2 - IN_PROGESS, 3 - DONE");
-                String status = null;
+                Status status = null;
                 int key = scanner.nextInt();
                 switch (key) {
                     case 1:
-                        status = "NEW";
+                        status = Status.NEW;
                         break;
                     case 2:
-                        status = " IN_PROGRESS";
+                        status = Status.IN_PROGRESS;
                         break;
                     case 3:
-                        status = "DONE";
+                        status = Status.DONE;
                         break;
                     default:
                         println("такого статуса нет");

@@ -1,15 +1,14 @@
 package service;
 
 import model.*;
-import model.IdGenerator;
 
 import java.util.*;
 
 import static model.Status.*;
-import static model.Printer.*;
+import static service.Printer.*;
 
 public class Manager {
-
+    // я бех понятия какой файл должен быть с большой буквы, ведт они все и так с большой, названия пакетов с маленькой
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
@@ -27,22 +26,22 @@ public class Manager {
         return subTasks;
     }
 
-    public Task makeTask(String name, String description) {
-         Task task = new Task(name, description, idGenerator.generateId(), "NEW");
+    public Task createTask(String name, String description) {
+         Task task = new Task(name, description, idGenerator.generateId(), NEW);
         tasks.put(task.getId(), task);
         println("Задача создана, ее название" + name);
         return task;
     }
 
-    public Epic makeEpic(String name, String description) {
-        Epic epic = new Epic(name, description, idGenerator.generateId(), "NEW", (List<SubTask>) subTasks);
+    public Epic createEpic(String name, String description) {
+        Epic epic = new Epic(name, description, idGenerator.generateId(), NEW, (List<SubTask>) subTasks);
         epics.put(epic.getId(), epic);
         println("Эпик создан, его название" + name);
         return epic;
     }
 
-    public SubTask makeSubTask(String name, String description, int id) {
-        SubTask subTask = new SubTask(name, description, id, "NEW");
+    public SubTask createSubTask(String name, String description, int id) {
+        SubTask subTask = new SubTask(name, description, id, NEW);
         subTasks.put(subTask.getId(), subTask);
         Set<Integer> setKeysTask = epics.keySet();
         if (setKeysTask.size() == 0) {
@@ -204,7 +203,7 @@ public class Manager {
             int statusDone = 0;
             Epic epic = epics.get(numEpic);
             List<SubTask> subTasks = epic.getListSubTask();
-            epic.setStatus(String.valueOf(calculateStatus(subTasks)));
+            epic.setStatus(calculateStatus(subTasks));
         } else {
             println("Такой под_задачи нет");
         }
@@ -216,7 +215,7 @@ public class Manager {
         int statusDone = 0;
         for (SubTask i : SubTasks) {
             SubTask subTask1 = subTasks.get(i);
-            String status = subTask1.getStatus();
+            Status status = subTask1.getStatus();
             if (statusNEW == subTasks.size()) {
                 return NEW;
             }
