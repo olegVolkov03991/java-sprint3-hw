@@ -1,5 +1,7 @@
 package menu;
 
+import service.HistoryManager;
+import memoryManagers.Managers;
 import model.*;
 import service.IdGenerator;
 import service.Manager;
@@ -8,9 +10,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-
     private Scanner scanner = new Scanner(System.in);
-    private Manager manager = new Manager();
+    private Managers managers = new Managers();
+    private Manager inMemoryTaskManager = managers.getDefault();
+    private HistoryManager historyManager = managers.getDefaultHistory();
     private IdGenerator idGenerator = new IdGenerator();
 
     public static void println(String message) {
@@ -26,6 +29,7 @@ public class Menu {
             println("5 - Удаление задачи по id");
             println("6 - Обновление задачи по id");
             println("7 - Вывести под_задачи эпика");
+            println("8 - Вывести последние 10 операций");
 
             int command = scanner.nextInt();
 
@@ -38,15 +42,15 @@ public class Menu {
                 int type = scanner.nextInt();
                 switch (type) {
                     case 1:
-                        manager.createTask(name, description);
+                        inMemoryTaskManager.createTask(name, description);
                         break;
                     case 2:
-                        manager.createEpic(name, description);
+                        inMemoryTaskManager.createEpic(name, description);
                         break;
                     case 3:
                         println("Введите id эпика");
                         int id = scanner.nextInt();
-                        manager.createSubTask(name, description, id);
+                        inMemoryTaskManager.createSubTask(name, description, id);
                         break;
                     default:
                         println("Такого эпика нет");
@@ -55,33 +59,33 @@ public class Menu {
 
             if (command == 2) {
                 println("Список задач:");
-                System.out.println(manager.getTasks());
+                System.out.println(inMemoryTaskManager.getTasks());
                 println("Список эпиков:");
-                System.out.println(manager.getEpics());
+                System.out.println(inMemoryTaskManager.getEpics());
                 println("Список под_задач:");
-                System.out.println(manager.getSubTasks());
+                System.out.println(inMemoryTaskManager.getSubTasks());
             }
 
             if (command == 3) {
-                manager.deleteTask();
-                manager.deleteEpic();
-                manager.deleteSubTask();
+                inMemoryTaskManager.deleteTask();
+                inMemoryTaskManager.deleteEpic();
+                inMemoryTaskManager.deleteSubTask();
             }
 
             if (command == 4) {
                 println("Введите id задачи");
                 int id = scanner.nextInt();
-                manager.getTaskById(id);
-                manager.getEpicById(id);
-                manager.getSubTaskById(id);
+                inMemoryTaskManager.getTaskById(id);
+                inMemoryTaskManager.getEpicById(id);
+                inMemoryTaskManager.getSubTaskById(id);
             }
 
             if (command == 5) {
                 println("Введите id задачи");
                 int id = scanner.nextInt();
-                manager.deleteTaskById(id);
-                manager.deleteEpicById(id);
-                manager.deleteSubTaskById(id);
+                inMemoryTaskManager.deleteTaskById(id);
+                inMemoryTaskManager.deleteEpicById(id);
+                inMemoryTaskManager.deleteSubTaskById(id);
             }
 
             if (command == 6) {
@@ -112,15 +116,19 @@ public class Menu {
                 Task task = new Task(name, description, id, status);
                 SubTask subTask = new SubTask(name, description, id, status);
                 Epic epic = new Epic(name, description, id, status, (List<SubTask>) subTask);
-                manager.updateTaskById(task);
-                manager.updateSubTaskById(subTask);
-                manager.updateEpicById(epic);
+                inMemoryTaskManager.updateTaskById(task);
+                inMemoryTaskManager.updateSubTaskById(subTask);
+                inMemoryTaskManager.updateEpicById(epic);
             }
 
             if (command == 7) {
                 println("Введите id эпика");
                 int id = scanner.nextInt();
-                manager.getEpicOdSubTask(id);
+                inMemoryTaskManager.getEpicOdSubTask(id);
+            }
+
+            if(command == 8){
+                System.out.println(historyManager.getHistory());
             }
         }
     }
