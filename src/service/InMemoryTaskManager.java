@@ -1,22 +1,20 @@
-package memoryManagers;
+package service;
 
 import model.Task;
 import model.Epic;
 import model.SubTask;
 import model.Status;
-import service.IdGenerator;
-import service.Manager;
 
 import java.util.*;
 
 import static model.Status.*;
 import static service.Printer.println;
 
-public class InMemoryTaskManager implements Manager {
+public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final Map<Integer, SubTask> subTasks = new HashMap<>();
-    private static List<Task> history = new ArrayList<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private IdGenerator idGenerator = new IdGenerator();
 
     @Override
@@ -69,6 +67,7 @@ public class InMemoryTaskManager implements Manager {
             println("Список задач пуст");
         } else if (!tasks.containsKey(id)) {
             println("задача:");
+            historyManager.add(tasks.get(id));
         } else {
             println("Такой задачи нет");
         }
@@ -81,11 +80,11 @@ public class InMemoryTaskManager implements Manager {
             println("Список эпиков пуст");
         } else if (epics.containsKey(id)) {
             println("эпик:");
+            historyManager.add(epics.get(id));
         } else {
             println("Такого эпика нет");
         }
         return epics.get(id);
-
     }
 
     @Override
@@ -94,6 +93,7 @@ public class InMemoryTaskManager implements Manager {
             println("Список под_задач пуст");
         } else if (subTasks.containsKey(id)) {
             println("под_задача:");
+            historyManager.add(subTasks.get(id));
         } else {
             println("Такой под_задачи нет");
         }
@@ -232,7 +232,6 @@ public class InMemoryTaskManager implements Manager {
         }
     }
 
-    @Override
     public Status calculateStatus(List<SubTask> SubTasks) {
         int statusNEW = 0;
         int statusDone = 0;
@@ -250,7 +249,7 @@ public class InMemoryTaskManager implements Manager {
     }
 
     @Override
-    public void getEpicOdSubTask(int id) {
+    public void EpicOdSubTask(int id) {
         if (epics.isEmpty()) {
             println("Список эпиков пуст");
         } else if (epics.containsKey(id)) {

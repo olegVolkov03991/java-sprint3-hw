@@ -4,7 +4,7 @@ import model.*;
 
 import java.util.*;
 
-public interface Manager {
+public interface TaskManager {
 
     Map<Integer, Task> getTasks();
 
@@ -48,8 +48,5 @@ public interface Manager {
 
     void updateSubTaskById(SubTask update);
 
-    Status calculateStatus(List<SubTask> SubTasks);
-
-    void getEpicOdSubTask(int id);
+    void EpicOdSubTask(int id);
 }
-

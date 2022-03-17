@@ -1,10 +1,10 @@
 package menu;
 
 import service.HistoryManager;
-import memoryManagers.Managers;
+import service.Managers;
 import model.*;
 import service.IdGenerator;
-import service.Manager;
+import service.TaskManager;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Menu {
     private Scanner scanner = new Scanner(System.in);
     private Managers managers = new Managers();
-    private Manager inMemoryTaskManager = managers.getDefault();
+    private TaskManager inMemoryTaskManager = managers.getDefault();
     private HistoryManager historyManager = managers.getDefaultHistory();
     private IdGenerator idGenerator = new IdGenerator();
 
@@ -124,7 +124,7 @@ public class Menu {
             if (command == 7) {
                 println("Введите id эпика");
                 int id = scanner.nextInt();
-                inMemoryTaskManager.getEpicOdSubTask(id);
+                inMemoryTaskManager.EpicOdSubTask(id);
             }
 
             if(command == 8){
