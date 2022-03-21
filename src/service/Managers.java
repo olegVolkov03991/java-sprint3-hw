@@ -7,7 +7,6 @@ public class Managers {
     }
 
     public static HistoryManager getDefaultHistory(){
-        InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-        return inMemoryHistoryManager;
+        return  new InMemoryHistoryManager();
     }
 }

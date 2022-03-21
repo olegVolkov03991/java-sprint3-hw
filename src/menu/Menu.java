@@ -124,7 +124,7 @@ public class Menu {
             if (command == 7) {
                 println("Введите id эпика");
                 int id = scanner.nextInt();
-                inMemoryTaskManager.EpicOdSubTask(id);
+                inMemoryTaskManager.printEpicSubTask(id);
             }
 
             if(command == 8){

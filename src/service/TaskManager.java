@@ -48,5 +48,5 @@ public interface TaskManager {
 
     void updateSubTaskById(SubTask update);
 
-    void EpicOdSubTask(int id);
+    void printEpicSubTask(int id);
 }

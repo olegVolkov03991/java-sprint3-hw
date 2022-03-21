@@ -249,19 +249,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void EpicOdSubTask(int id) {
-        if (epics.isEmpty()) {
+    public void printEpicSubTask(int id) {
+        if(epics.isEmpty()){
             println("Список эпиков пуст");
-        } else if (epics.containsKey(id)) {
-            Epic epic = epics.get(id);
-            List<SubTask> subTasks = epic.getListSubTask();
-            if (subTasks.size() == 0) {
-                println("У этого эпика нет под_задач");
-            } else {
-                println("Список под_задач" + subTasks);
-            }
+        } else if(!epics.containsKey(id)){
+            println("Такой под_задачи в списке епиков нет");
         } else {
-            println("Такого эпика нет");
+            Epic epic = epics.get(id);
+                List<SubTask> subTasks = epic.getListSubTask();
+                if(subTasks.size() == 0){
+                    println("У этого эпика нет под_задач");
+                } else {
+                    println("Список под_задач" + subTasks + " епика" + epics.get(id));
+                }
+            }
         }
     }
-}
