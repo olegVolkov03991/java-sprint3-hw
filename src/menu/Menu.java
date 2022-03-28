@@ -112,7 +112,6 @@ public class Menu {
                         println("такого статуса нет");
                 }
 
-                status = status;
                 Task task = new Task(name, description, id, status);
                 SubTask subTask = new SubTask(name, description, id, status);
                 Epic epic = new Epic(name, description, id, status, (List<SubTask>) subTask);

@@ -101,39 +101,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getTasks(Map<Integer, Task> taskMap) {
-        List<Task> taskList = new ArrayList<>();
-        Set<Integer> setKeys = taskMap.keySet();
-        for (int i : setKeys) {
-            Task task = taskMap.get(i);
-            taskList.add(task);
-        }
-        return taskList;
-    }
-
-    @Override
-    public List<Epic> getEpic(Map<Integer, Epic> epicMap) {
-        List<Epic> epicList = new ArrayList<>();
-        Set<Integer> setKeys = epicMap.keySet();
-        for (int i : setKeys) {
-            Epic epic = (Epic) epicMap.get(i);
-            epicList.add(epic);
-        }
-        return epicList;
-    }
-
-    @Override
-    public List<SubTask> getSubTask(Map<Integer, SubTask> subTaskMap) {
-        List<SubTask> subTaskList = new ArrayList<>();
-        Set<Integer> setKeys = subTaskMap.keySet();
-        for (int i : setKeys) {
-            SubTask subTask = subTaskMap.get(i);
-            subTaskList.add(subTask);
-        }
-        return subTaskList;
-    }
-
-    @Override
     public void deleteTask() {
         tasks.clear();
         println("Задачи удалены");

@@ -24,12 +24,6 @@ public interface TaskManager {
 
     SubTask getSubTaskById(int id);
 
-    List<Task> getTasks(Map<Integer, Task> taskMap);
-
-    List<Epic> getEpic(Map<Integer, Epic> epicMap);
-
-    List<SubTask> getSubTask(Map<Integer, SubTask> subTaskMap);
-
     void deleteTask();
 
     void deleteEpic();
