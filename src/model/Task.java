@@ -60,4 +60,38 @@ public class Task {
         result = result + ", id= " + id + ", status= " + status + '\'';
         return result;
     }
+
+    public static Task fromString(String value){
+        String[] array = value.split(",");
+        var id = Integer.parseInt(array[0]);
+        String clazz = array[1];
+        var name = array [2];
+        String statusStr = array[3];
+        String description = array[4];
+        Status status;
+        if("NEW".equals(statusStr)){
+            status = (Status.NEW);
+        } else if("IN_PROGRESS".equals(statusStr)){
+            status = (Status.IN_PROGRESS);
+        } else {
+          status =  Status.DONE;
+        }
+
+        if("Task".equals(clazz)){
+            Task task = new Task(name,description,id,status);
+            task.getId();
+            task.setStatus(status);
+            return task;
+        } else if("Epic".equals(clazz)){
+            Task task = new SubTask(name,description,id,status);
+            task.getId();
+            task.setStatus(status);
+            return task;
+        } else{
+            Task task = new SubTask(name, description, id, status);
+            task.getId();
+            task.setStatus(status);
+            return task;
+        }
+    }
 }

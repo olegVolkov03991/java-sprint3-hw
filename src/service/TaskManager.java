@@ -6,6 +6,8 @@ import java.util.*;
 
 public interface TaskManager {
 
+    List<Task> history();
+
     Map<Integer, Task> getTasks();
 
     Map<Integer, Epic> getEpics();

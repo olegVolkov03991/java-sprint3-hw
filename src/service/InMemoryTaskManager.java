@@ -11,11 +11,16 @@ import static model.Status.*;
 import static service.Printer.println;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
-    private final Map<Integer, SubTask> subTasks = new HashMap<>();
+    public final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
+    protected final Map<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private IdGenerator idGenerator = new IdGenerator();
+
+    @Override
+    public List<Task> history() {
+        return historyManager.getHistory();
+    }
 
     @Override
     public Map<Integer, Task> getTasks() {
@@ -44,12 +49,14 @@ public class InMemoryTaskManager implements TaskManager {
     public Epic createEpic(String name, String description) {
         Epic epic = new Epic(name, description, idGenerator.generateId(), NEW, (List<SubTask>) subTasks);
         epics.put(epic.getId(), epic);
+        epics.put(epic.getId(), epic);
         println("Эпик создан, его название" + name);
         return epic;
     }
 
     @Override
     public SubTask createSubTask(String name, String description, int id) {
+
         SubTask subTask = new SubTask(name, description, id, NEW);
         subTasks.put(subTask.getId(), subTask);
         Set<Integer> setKeysTask = epics.keySet();
@@ -217,18 +224,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void printEpicSubTask(int id) {
-        if(epics.isEmpty()){
+        if (epics.isEmpty()) {
             println("Список эпиков пуст");
-        } else if(!epics.containsKey(id)){
+        } else if (!epics.containsKey(id)) {
             println("Такой под_задачи в списке епиков нет");
         } else {
             Epic epic = epics.get(id);
-                List<SubTask> subTasks = epic.getListSubTask();
-                if(subTasks.size() == 0){
-                    println("У этого эпика нет под_задач");
-                } else {
-                    println("Список под_задач" + subTasks + " епика" + epics.get(id));
-                }
+            List<SubTask> subTasks = epic.getListSubTask();
+            if (subTasks.size() == 0) {
+                println("У этого эпика нет под_задач");
+            } else {
+                println("Список под_задач" + subTasks + " епика" + epics.get(id));
             }
         }
     }
+}
