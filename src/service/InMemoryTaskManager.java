@@ -38,24 +38,24 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task createTask(String name, String description) {
+    public void createTask(String name, String description) {
         Task task = new Task(name, description, idGenerator.generateId(), NEW);
         tasks.put(task.getId(), task);
         println("Задача создана, ее название" + name);
-        return task;
+
     }
 
     @Override
-    public Epic createEpic(String name, String description) {
+    public void createEpic(String name, String description) {
         Epic epic = new Epic(name, description, idGenerator.generateId(), NEW, (List<SubTask>) subTasks);
         epics.put(epic.getId(), epic);
         epics.put(epic.getId(), epic);
         println("Эпик создан, его название" + name);
-        return epic;
+
     }
 
     @Override
-    public SubTask createSubTask(String name, String description, int id) {
+    public void createSubTask(String name, String description, int id) {
 
         SubTask subTask = new SubTask(name, description, id, NEW);
         subTasks.put(subTask.getId(), subTask);
@@ -65,7 +65,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             println("Под_задача создана, ее название" + name);
         }
-        return subTask;
+
     }
 
     @Override
@@ -167,7 +167,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Map<Integer, Task> updateTaskById(Task update) {
+    public void updateTaskById(Task update) {
         if (tasks.isEmpty()) {
             println("Список задач пуст");
         } else if (tasks.containsKey(update.getId())) {
@@ -176,7 +176,6 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             println("Такой задачи нет");
         }
-        return tasks;
     }
 
     @Override

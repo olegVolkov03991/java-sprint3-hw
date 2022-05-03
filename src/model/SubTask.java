@@ -18,14 +18,6 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        String result = "name = " + getName() + '\'';
-        if (getDescription() != null) {
-            result = result + ", descroption= " + getDescription().length() + '\'';
-        } else {
-            result = result + ", description= null ";
-        }
-        result = result + ", id=" + getId() + ", " + "epicId" + epicId
-                + ", status= " + getStatus() + '\'';
-        return result;
+        return super.toString() + "," + getEpicNumber();
     }
 }

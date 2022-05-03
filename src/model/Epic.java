@@ -16,14 +16,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        String result = "name= " + getName() + '\'';
-        if (getDescription() != null) {
-            result = result + ", descripton= " + getDescription().length() + '\'';
-        } else {
-            result = result + ", description= null";
-        }
-        result = result + ", id= " + getId() + ", SubTaskNumber = " + subTasks
-                + ", status= " + getStatus() + '\'';
-        return result;
+        return super.toString();
     }
 }
