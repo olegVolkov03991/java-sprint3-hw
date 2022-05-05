@@ -42,7 +42,6 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = new Task(name, description, idGenerator.generateId(), NEW);
         tasks.put(task.getId(), task);
         println("Задача создана, ее название" + name);
-
     }
 
     @Override
@@ -51,7 +50,6 @@ public class InMemoryTaskManager implements TaskManager {
         epics.put(epic.getId(), epic);
         epics.put(epic.getId(), epic);
         println("Эпик создан, его название" + name);
-
     }
 
     @Override
@@ -65,7 +63,6 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             println("Под_задача создана, ее название" + name);
         }
-
     }
 
     @Override

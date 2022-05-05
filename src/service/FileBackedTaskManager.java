@@ -6,6 +6,7 @@ import model.SubTask;
 import model.Task;
 
 import java.io.*;
+import java.net.Proxy;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -15,7 +16,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File fileToSave;
 
-    public FileBackedTaskManager(File fileToSave, HistoryManager defaultHistory) {
+    public FileBackedTaskManager(File fileToSave) {
         this.fileToSave = fileToSave;
     }
 
@@ -101,39 +102,53 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public static Task fromString(String value){
-        String[] strigns = value.split(",");
-        var id = Integer.parseInt(strigns[0]);
-        String clazz = strigns[1];
-        var name = strigns [2];
-        String statusStr = strigns[3];
-        String description = strigns[4];
-        Status status;
-        if("NEW".equals(statusStr)){
-            status = (Status.NEW);
-        } else if("IN_PROGRESS".equals(statusStr)){
-            status = (Status.IN_PROGRESS);
-        } else {
-            status =  Status.DONE;
+//    public static Task fromString(String value) {
+//        String[] strings = value.split(",");
+//        var id = Integer.parseInt(strings[0]);
+//        String clazz = strings[1];
+//        var name = strings [2];
+//        String statusStr = strings[3];
+//        String description = strings[4];
+//        Status status;
+//        if("NEW".equals(statusStr)){
+//            status = (Status.NEW);
+//        } else if("IN_PROGRESS".equals(statusStr)){
+//            status = (Status.IN_PROGRESS);
+//        } else {
+//            status =  Status.DONE;
+//        }
+//
+//        if(strings[1].equals("Task")){
+//            Task task = new Task(name,description,id,status);
+//            task.getId();
+//            task.setStatus(status);
+//            return task;
+//        } else if(strings[1].equals("Epic")){
+//            Task task = new SubTask(name,description,id,status);
+//            task.getId();
+//            task.setStatus(status);
+//            return task;
+//        } else{
+//            Task task = new SubTask(name, description, id, status);
+//            task.getId();
+//            task.setStatus(status);
+//            return task;
+//        }
+        public Task fromString(String str) {
+            String[] parameters = str.split(",");
+            String typeTask = parameters[1];
+            Task task = null;
+            switch (typeTask) {
+                case "Task":
+                    task = new Task(parameters[2], parameters[4], task.getId(), Status.NEW);
+                case "SubTask":
+                    task = new Epic(parameters[2], parameters[4], task.getId(), Status.NEW, (List<SubTask>) subTasks);
+                case "Epic":
+                    task = new SubTask(parameters[2], parameters[4], task.getId(), Status.NEW);
+            }
+            return task;
         }
 
-        if(strigns[1].equals("Task")){
-            Task task = new Task(name,description,id,status);
-            task.getId();
-            task.setStatus(status);
-            return task;
-        } else if(strigns[1].equals("Epic")){
-            Task task = new SubTask(name,description,id,status);
-            task.getId();
-            task.setStatus(status);
-            return task;
-        } else{
-            Task task = new SubTask(name, description, id, status);
-            task.getId();
-            task.setStatus(status);
-            return task;
-        }
-    }
 
     public void save() throws ManagerSaveException {
         try {
@@ -165,8 +180,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return Arrays.asList(string.split(","));
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
-        var manager = new FileBackedTaskManager(file, Managers.getDefaultHistory());
+    public FileBackedTaskManager loadFromFile(File file) {
+        var manager = new FileBackedTaskManager(file);
         try {
             List<Task> tasks = (List<Task>) fromString(Files.readString(file.toPath()));
             tasks.sort(Comparator.comparing(Task::getName));
