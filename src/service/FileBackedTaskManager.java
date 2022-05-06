@@ -102,52 +102,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-//    public static Task fromString(String value) {
-//        String[] strings = value.split(",");
-//        var id = Integer.parseInt(strings[0]);
-//        String clazz = strings[1];
-//        var name = strings [2];
-//        String statusStr = strings[3];
-//        String description = strings[4];
-//        Status status;
-//        if("NEW".equals(statusStr)){
-//            status = (Status.NEW);
-//        } else if("IN_PROGRESS".equals(statusStr)){
-//            status = (Status.IN_PROGRESS);
-//        } else {
-//            status =  Status.DONE;
-//        }
-//
-//        if(strings[1].equals("Task")){
-//            Task task = new Task(name,description,id,status);
-//            task.getId();
-//            task.setStatus(status);
-//            return task;
-//        } else if(strings[1].equals("Epic")){
-//            Task task = new SubTask(name,description,id,status);
-//            task.getId();
-//            task.setStatus(status);
-//            return task;
-//        } else{
-//            Task task = new SubTask(name, description, id, status);
-//            task.getId();
-//            task.setStatus(status);
-//            return task;
-//        }
-        public Task fromString(String str) {
-            String[] parameters = str.split(",");
-            String typeTask = parameters[1];
-            Task task = null;
-            switch (typeTask) {
-                case "Task":
-                    task = new Task(parameters[2], parameters[4], task.getId(), Status.NEW);
-                case "SubTask":
-                    task = new Epic(parameters[2], parameters[4], task.getId(), Status.NEW, (List<SubTask>) subTasks);
-                case "Epic":
-                    task = new SubTask(parameters[2], parameters[4], task.getId(), Status.NEW);
-            }
-            return task;
+    public Task fromString(String str) {
+        String[] parameters = str.split(",");
+        String typeTask = parameters[1];
+        Task task = null;
+        switch (typeTask) {
+            case "Task":
+                task = new Task(parameters[2], parameters[4], task.getId(), Status.NEW);
+            case "SubTask":
+                task = new Epic(parameters[2], parameters[4], task.getId(), Status.NEW, (List<SubTask>) subTasks);
+            case "Epic":
+                task = new SubTask(parameters[2], parameters[4], task.getId(), Status.NEW);
         }
+        return task;
+    }
 
 
     public void save() throws ManagerSaveException {
@@ -164,11 +132,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileWriter.write(task.toString());
             }
             StringBuilder sb = new StringBuilder();
-            if(!super.history().isEmpty()){
-                for(Task task : super.history()){
+            if (!super.history().isEmpty()) {
+                for (Task task : super.history()) {
                     sb.append(task.getId()).append(",");
                 }
-                sb.deleteCharAt(sb.length()-1);
+                sb.deleteCharAt(sb.length() - 1);
                 fileWriter.write(sb.toString());
             }
         } catch (IOException e) {
