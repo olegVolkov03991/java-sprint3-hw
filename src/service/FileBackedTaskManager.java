@@ -6,13 +6,12 @@ import model.SubTask;
 import model.Task;
 
 import java.io.*;
-import java.net.Proxy;
 import java.nio.file.Files;
 import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    public static final String TABLE_TITLE_STRING = "id,type,name,status,description,epic";
+    public static final String COLUMNS = "id,type,name,status,description,epic";
 
     private final File fileToSave;
 
@@ -101,18 +100,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.printEpicSubTask(id);
         save();
     }
-
     public Task fromString(String str) {
-        String[] parameters = str.split(",");
-        String typeTask = parameters[1];
+        final String TASK_IN_LINE_DELIMITER = ",";
+        String[] parameters = str.split(TASK_IN_LINE_DELIMITER);
         Task task = null;
-        switch (typeTask) {
-            case "Task":
-                task = new Task(parameters[2], parameters[4], task.getId(), Status.NEW);
-            case "SubTask":
-                task = new Epic(parameters[2], parameters[4], task.getId(), Status.NEW, (List<SubTask>) subTasks);
-            case "Epic":
-                task = new SubTask(parameters[2], parameters[4], task.getId(), Status.NEW);
+        final int ID_COLUMN_INDEX = task.getId();
+        final String TYPE_COLUMN_INDEX = parameters[1];
+        final String NAME_COLUMN_INDEX = parameters[2];
+        final String DESCRIP_COLUMN_INDEX = parameters[4];
+        final String task1 = "Task";
+        final String subTask = "SubTask";
+        final String epic = "Epic";
+
+        switch (TYPE_COLUMN_INDEX) {
+            case task1:
+                task = new Task(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW);
+            case subTask:
+                task = new Epic(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW, (List<SubTask>) subTasks);
+            case epic:
+                task = new SubTask(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW);
         }
         return task;
     }
@@ -121,7 +127,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void save() throws ManagerSaveException {
         try {
             Writer fileWriter = new FileWriter(fileToSave);
-            fileWriter.write(TABLE_TITLE_STRING);
+            fileWriter.write(COLUMNS);
             for (Task task : getTasks().values()) {
                 fileWriter.write(task.toString());
             }
