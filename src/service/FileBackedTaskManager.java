@@ -13,6 +13,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static final String COLUMNS = "id,type,name,status,description,epic";
 
+    Task task = null;
+    public static final String TASK_IN_LINE_DELIMITER = ",";
+    public final int ID_COLUMN_INDEX = task.getId();
+    public static final int TYPE_COLUMN_INDEX = 1;
+    public static final int NAME_COLUMN_INDEX = 2;
+    public static final int DESCRIP_COLUMN_INDEX = 4;
+    public static final String task1 = "Task";
+    public static final String subTask = "SubTask";
+    public static final String epic = "Epic";
+
     private final File fileToSave;
 
     public FileBackedTaskManager(File fileToSave) {
@@ -100,29 +110,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.printEpicSubTask(id);
         save();
     }
-    public Task fromString(String str) {
-        final String TASK_IN_LINE_DELIMITER = ",";
-        String[] parameters = str.split(TASK_IN_LINE_DELIMITER);
-        Task task = null;
-        final int ID_COLUMN_INDEX = task.getId();
-        final String TYPE_COLUMN_INDEX = parameters[1];
-        final String NAME_COLUMN_INDEX = parameters[2];
-        final String DESCRIP_COLUMN_INDEX = parameters[4];
-        final String task1 = "Task";
-        final String subTask = "SubTask";
-        final String epic = "Epic";
 
-        switch (TYPE_COLUMN_INDEX) {
+    public Task fromString(String str) {
+        String[] parameters = str.split(TASK_IN_LINE_DELIMITER);
+        switch (parameters[TYPE_COLUMN_INDEX]) {
             case task1:
-                task = new Task(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW);
+                task = new Task(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW);
             case subTask:
-                task = new Epic(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW, (List<SubTask>) subTasks);
+                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW, (List<SubTask>) subTasks);
             case epic:
-                task = new SubTask(NAME_COLUMN_INDEX, DESCRIP_COLUMN_INDEX, ID_COLUMN_INDEX, Status.NEW);
+                task = new SubTask(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW);
+            default:
+                System.out.println("Ввели не верные данные");
+                break;
         }
         return task;
     }
-
 
     public void save() throws ManagerSaveException {
         try {
@@ -140,7 +143,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             StringBuilder sb = new StringBuilder();
             if (!super.history().isEmpty()) {
                 for (Task task : super.history()) {
-                    sb.append(task.getId()).append(",");
+                    sb.append(task.getId()).append(TASK_IN_LINE_DELIMITER);
                 }
                 sb.deleteCharAt(sb.length() - 1);
                 fileWriter.write(sb.toString());
@@ -151,7 +154,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static List<String> historyFromString(String string) {
-        return Arrays.asList(string.split(","));
+        return Arrays.asList(string.split(TASK_IN_LINE_DELIMITER));
     }
 
     public FileBackedTaskManager loadFromFile(File file) {
