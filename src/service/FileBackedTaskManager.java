@@ -13,16 +13,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static final String COLUMNS = "id,type,name,status,description,epic";
 
-    Task task = null;
+    public static final String typeSubTask = "SubTask";
+    public static final String typeTask = "Task";
+    public static final String typeEpic = "Epic";
     public static final String TASK_IN_LINE_DELIMITER = ",";
-    public final int ID_COLUMN_INDEX = task.getId();
+    public static final int DESCRIPTION_COLUMN_INDEX = 4;
     public static final int TYPE_COLUMN_INDEX = 1;
     public static final int NAME_COLUMN_INDEX = 2;
-    public static final int DESCRIP_COLUMN_INDEX = 4;
-    public static final String task1 = "Task";
-    public static final String subTask = "SubTask";
-    public static final String epic = "Epic";
-
     private final File fileToSave;
 
     public FileBackedTaskManager(File fileToSave) {
@@ -112,14 +109,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public Task fromString(String str) {
+        Task task = null;
         String[] parameters = str.split(TASK_IN_LINE_DELIMITER);
         switch (parameters[TYPE_COLUMN_INDEX]) {
-            case task1:
-                task = new Task(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW);
-            case subTask:
-                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW, (List<SubTask>) subTasks);
-            case epic:
-                task = new SubTask(parameters[NAME_COLUMN_INDEX], parameters[DESCRIP_COLUMN_INDEX], ID_COLUMN_INDEX, Status.NEW);
+            case typeTask:
+                task = new Task(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
+            case typeSubTask:
+                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW, (List<SubTask>) subTasks);
+            case typeEpic:
+                task = new SubTask(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
             default:
                 System.out.println("Ввели не верные данные");
                 break;
