@@ -6,7 +6,6 @@ import model.*;
 import service.IdGenerator;
 import service.TaskManager;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -42,15 +41,20 @@ public class Menu {
                 int type = scanner.nextInt();
                 switch (type) {
                     case 1:
-                        inMemoryTaskManager.createTask(name, description);
+                        Task newTask = new Task(name, description, idGenerator.generateId(), Status.NEW);
+                        inMemoryTaskManager.createTask(newTask);
+                       // inMemoryTaskManager.createTask(new Task(name, description, idGenerator.generateId(),));
                         break;
                     case 2:
-                        inMemoryTaskManager.createEpic(name, description);
+                       // inMemoryTaskManager.createEpic(name, description);
+                        Epic newEpic = new Epic(name, description, idGenerator.generateId(), Status.NEW);
+                        inMemoryTaskManager.createEpic(newEpic);
                         break;
                     case 3:
                         println("Введите id эпика");
                         int id = scanner.nextInt();
-                        inMemoryTaskManager.createSubTask(name, description, id);
+                        SubTask newSubTask = new SubTask(name, description, id, Status.NEW);
+                        inMemoryTaskManager.createSubTask(newSubTask, new Epic(name, description, idGenerator.generateId(), Status.NEW));
                         break;
                     default:
                         println("Такого эпика нет");
@@ -114,7 +118,7 @@ public class Menu {
 
                 Task task = new Task(name, description, id, status);
                 SubTask subTask = new SubTask(name, description, id, status);
-                Epic epic = new Epic(name, description, id, status, (List<SubTask>) subTask);
+                Epic epic = new Epic(name, description, id, status);
                 inMemoryTaskManager.updateTaskById(task);
                 inMemoryTaskManager.updateSubTaskById(subTask);
                 inMemoryTaskManager.updateEpicById(epic);

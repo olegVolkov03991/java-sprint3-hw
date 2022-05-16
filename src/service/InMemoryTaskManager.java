@@ -38,31 +38,30 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(String name, String description) {
-        Task task = new Task(name, description, idGenerator.generateId(), NEW);
-        tasks.put(task.getId(), task);
-        println("Задача создана, ее название" + name);
+    public void createTask(Task task) {
+       int numberTask = idGenerator.generateId();
+        tasks.put(numberTask, task);
+        System.out.println("задача успешно создана");
+
     }
 
     @Override
-    public void createEpic(String name, String description) {
-        Epic epic = new Epic(name, description, idGenerator.generateId(), NEW, (List<SubTask>) subTasks);
-        epics.put(epic.getId(), epic);
-        epics.put(epic.getId(), epic);
-        println("Эпик создан, его название" + name);
+    public void createEpic(Epic epic) {
+
+        int numberEpic = idGenerator.generateId();
+        epics.put(numberEpic, epic);
+        System.out.println("эпик успешно создан");
     }
 
     @Override
-    public void createSubTask(String name, String description, int id) {
+    public void createSubTask(SubTask subTask, Epic epic) {
 
-        SubTask subTask = new SubTask(name, description, id, NEW);
-        subTasks.put(subTask.getId(), subTask);
-        Set<Integer> setKeysTask = epics.keySet();
-        if (setKeysTask.size() == 0) {
-            println("Такого эпика нет!");
-        } else {
-            println("Под_задача создана, ее название" + name);
-        }
+        int numberSubTask = idGenerator.generateId();
+        subTask.setEpicNumber(epic.getId());
+        subTasks.put(numberSubTask, subTask);
+        epics.get(epic.getId()).updateStartTimeAndDuration();
+        System.out.println("под_задача успешно создана");
+
     }
 
     @Override
@@ -164,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTaskById(Task update) {
+    public Object updateTaskById(Task update) {
         if (tasks.isEmpty()) {
             println("Список задач пуст");
         } else if (tasks.containsKey(update.getId())) {
@@ -173,6 +172,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             println("Такой задачи нет");
         }
+        return null;
     }
 
     @Override
@@ -186,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubTaskById(SubTask update) {
+    public Object updateSubTaskById(SubTask update) {
         if (subTasks.isEmpty()) {
             println("Список под_задач пуст");
         } else if (subTasks.containsKey(update.getId())) {
@@ -200,6 +200,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             println("Такой под_задачи нет");
         }
+        return null;
     }
 
     public Status calculateStatus(List<SubTask> SubTasks) {

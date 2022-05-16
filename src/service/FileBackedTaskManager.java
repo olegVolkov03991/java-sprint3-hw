@@ -27,20 +27,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void createTask(String name, String description) {
-        super.createTask(name, description);
+    public void createTask(Task task){
+        super.createTask(task);
         save();
     }
 
     @Override
-    public void createEpic(String name, String description) {
-        super.createEpic(name, description);
+    public void createEpic(Epic epic){
+        super.createEpic(epic);
         save();
     }
 
     @Override
-    public void createSubTask(String name, String description, int id) {
-        super.createSubTask(name, description, id);
+    public void createSubTask(SubTask subTask, Epic epic){
+        super.createSubTask(subTask, epic);
         save();
     }
 
@@ -85,9 +85,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTaskById(Task update) {
+    public void deleteAll(){
+        super.deleteAll();
+        save();
+    }
+
+    @Override
+    public Object updateTaskById(Task update) {
         super.updateTaskById(update);
         save();
+        return null;
     }
 
     @Override
@@ -97,9 +104,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubTaskById(SubTask update) {
+    public Object updateSubTaskById(SubTask update) {
         super.updateSubTaskById(update);
         save();
+        return null;
     }
 
     @Override
@@ -115,7 +123,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             case typeTask:
                 task = new Task(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
             case typeSubTask:
-                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW, (List<SubTask>) subTasks);
+                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
             case typeEpic:
                 task = new SubTask(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
             default:

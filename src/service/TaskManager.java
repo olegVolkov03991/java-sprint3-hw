@@ -14,12 +14,6 @@ public interface TaskManager {
 
     Map<Integer, SubTask> getSubTasks();
 
-    void createTask(String name, String description);
-
-    void createEpic(String name, String description);
-
-    void createSubTask(String name, String description, int id);
-
     Task getTaskById(int id);
 
     Epic getEpicById(int id);
@@ -38,11 +32,20 @@ public interface TaskManager {
 
     void deleteSubTaskById(int id);
 
-    void updateTaskById(Task update);
+    default void deleteAll() {
+    }
+
+    Object updateTaskById(Task update);
 
     void updateEpicById(Epic update);
 
-    void updateSubTaskById(SubTask update);
+    Object updateSubTaskById(SubTask update);
 
     void printEpicSubTask(int id);
+
+    void createEpic(Epic epic);
+
+    void createSubTask(SubTask subTask, Epic epic);
+
+    void createTask(Task task);
 }
