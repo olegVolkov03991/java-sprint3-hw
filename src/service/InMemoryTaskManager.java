@@ -11,7 +11,7 @@ import static model.Status.*;
 import static service.Printer.println;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HistoryManager InMemoryHistoryManager = Managers.getDefaultHistory();
+    private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
     public final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, SubTask> subTasks = new HashMap<>();
@@ -40,7 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createTask(Task task) {
-       int numberTask = idGenerator.generateId();
+        int numberTask = idGenerator.generateId();
         tasks.put(numberTask, task);
         System.out.println("задача успешно создана");
     }
@@ -202,17 +202,27 @@ public class InMemoryTaskManager implements TaskManager {
         return null;
     }
 
-    public Status calculateStatus(List<SubTask> SubTasks) {
+    public Status calculateStatus(List<SubTask> subTasks1) {
         int statusNEW = 0;
         int statusDone = 0;
-        for (SubTask i : SubTasks) {
-            SubTask subTask1 = subTasks.get(i);
-            Status status = subTask1.getStatus();
-            if (statusNEW == subTasks.size()) {
-                return NEW;
+        Status newStatus = NEW;
+        ArrayList<Status> statuses = new ArrayList<>();
+        for (SubTask i : subTasks1) {
+            SubTask subTask = subTasks.get(i);
+            Status status = subTask.getStatus();
+            if (NEW.equals(status)) {
+                statusNEW += 1;
             }
-            if (statusDone == subTasks.size()) {
-                return DONE;
+            if (DONE.equals(status)) {
+                statusDone += 1;
+            }
+
+            if (statuses.size() == statusNEW) {
+                return newStatus;
+            } else if (statuses.size() == statusDone) {
+                newStatus = DONE;
+            } else {
+                newStatus = IN_PROGRESS;
             }
         }
         return IN_PROGRESS;
@@ -234,7 +244,8 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-    public HistoryManager getHistoryManager(){
-        return InMemoryHistoryManager;
+
+    public HistoryManager getHistoryManager() {
+        return inMemoryHistoryManager;
     }
 }

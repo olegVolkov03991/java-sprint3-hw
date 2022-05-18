@@ -15,9 +15,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static final String typeTask = "task";
     public static final String typeEpic = "epic";
     public static final String TASK_IN_LINE_DELIMITER = ",";
-    public static final int DESCRIPTION_COLUMN_INDEX = 4;
-    public static final int TYPE_COLUMN_INDEX = 1;
-    public static final int NAME_COLUMN_INDEX = 2;
     private final File fileToSave;
 
     public FileBackedTaskManager(File fileToSave) {
