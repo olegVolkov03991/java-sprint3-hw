@@ -6,16 +6,14 @@ import model.SubTask;
 import model.Task;
 
 import java.io.*;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    public static final String COLUMNS = "id,type,name,status,description,epic";
-
-    public static final String typeSubTask = "SubTask";
-    public static final String typeTask = "Task";
-    public static final String typeEpic = "Epic";
+    public static final String typeSubTask = "subTask";
+    public static final String typeTask = "task";
+    public static final String typeEpic = "epic";
     public static final String TASK_IN_LINE_DELIMITER = ",";
     public static final int DESCRIPTION_COLUMN_INDEX = 4;
     public static final int TYPE_COLUMN_INDEX = 1;
@@ -116,66 +114,40 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public Task fromString(String str) {
-        Task task = null;
-        String[] parameters = str.split(TASK_IN_LINE_DELIMITER);
-        switch (parameters[TYPE_COLUMN_INDEX]) {
-            case typeTask:
-                task = new Task(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
-            case typeSubTask:
-                task = new Epic(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
-            case typeEpic:
-                task = new SubTask(parameters[NAME_COLUMN_INDEX], parameters[DESCRIPTION_COLUMN_INDEX], task.getId(), Status.NEW);
-            default:
-                System.out.println("Ввели не верные данные");
-                break;
+    public static String toString(HistoryManager manager){
+        if(!manager.getHistory().isEmpty()){
+            StringBuilder stb = new StringBuilder();
+            for(Task task : manager.getHistory()){
+                String id = String.valueOf(task.getId());
+                stb.append(id).append(",");
+            }
+            return stb.deleteCharAt(stb.length() -2).toString();
         }
-        return task;
+        return null;
     }
 
     public void save() throws ManagerSaveException {
-        try {
-            Writer fileWriter = new FileWriter(fileToSave);
-            fileWriter.write(COLUMNS);
-            for (Task task : getTasks().values()) {
-                fileWriter.write(task.toString());
-            }
-            for (SubTask epic : getSubTasks().values()) {
-                fileWriter.write(epic.toString());
-            }
-            for (Task task : getSubTasks().values()) {
-                fileWriter.write(task.toString());
-            }
-            StringBuilder sb = new StringBuilder();
-            if (!super.history().isEmpty()) {
-                for (Task task : super.history()) {
-                    sb.append(task.getId()).append(TASK_IN_LINE_DELIMITER);
+        try(FileWriter out = new FileWriter(fileToSave, StandardCharsets.UTF_8)){
+            for(Epic epic : getEpics().values()){
+                out.write(epic.toString());
+                for(SubTask subTask : epic.getListSubTask()){
+                    out.write(subTask.toString());
                 }
-                sb.deleteCharAt(sb.length() - 1);
-                fileWriter.write(sb.toString());
             }
-        } catch (IOException e) {
-            throw new ManagerSaveException(e.getMessage());
+            for(Task task : getTasks().values()){
+                out.write(task.toString());
+            }
+            if(toString(super.getHistoryManager()) != null){
+                out.write("\n");
+                out.write(toString(super.getHistoryManager()));
+            }
+
+        }catch (IOException e){
+            throw new ManagerSaveException("ошибка автосохранения");
         }
     }
 
     private static List<String> historyFromString(String string) {
         return Arrays.asList(string.split(TASK_IN_LINE_DELIMITER));
-    }
-
-    public FileBackedTaskManager loadFromFile(File file) {
-        var manager = new FileBackedTaskManager(file);
-        try {
-            List<Task> tasks = (List<Task>) fromString(Files.readString(file.toPath()));
-            tasks.sort(Comparator.comparing(Task::getName));
-            List<String> history = historyFromString(Files.readString(file.toPath()));
-            for (Task task : tasks) {
-                if (history.contains(task.getId())) {
-                }
-            }
-        } catch (IOException e) {
-            throw new ManagerSaveException(e.getMessage());
-        }
-        return manager;
     }
 }

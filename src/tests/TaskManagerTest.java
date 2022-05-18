@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import model.Epic;
 import model.Status;
@@ -7,25 +7,24 @@ import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.IdGenerator;
 import service.TaskManager;
 
 class TaskManagerTest<T extends TaskManager> {
-    private final T object;
+    IdGenerator id = new IdGenerator();
+    private final T manager;
     TaskManager taskManager;
-    Epic epic;
-    SubTask subTask;
-    Task task;
+    Task task = new Task("task", "task", id.generateId(), Status.NEW);
+    Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
+    SubTask subTask = new SubTask("subTask", "subTask", id.generateId(), Status.NEW);
 
-    public TaskManagerTest(T object){
-        this.object = object;
+    public TaskManagerTest(T manager){
+        this.manager = manager;
     }
 
     @BeforeEach
     void createTaskManager(){
-        taskManager = object;
-        subTask = new SubTask("купить собаку", "собаку купить", subTask.getId(), Status.NEW);
-        epic = new Epic("купить собаку", "собаку купить", epic.getId(), Status.NEW);
-        task = new Task("test", "test", task.getId(), Status.NEW);
+        taskManager = manager;
     }
 
     @Test
@@ -147,11 +146,6 @@ class TaskManagerTest<T extends TaskManager> {
         SubTask expectedSubtasks = new SubTask("помыть кота", "кота помыть", subTask.getId(), Status.NEW);
 
         Assertions.assertEquals(expectedSubtasks, taskManager.updateSubTaskById(expectedSubtasks), "под_задачи разные");
-    }
-
-    @Test
-    void printEpicSubTask() {
-
     }
 
     @Test

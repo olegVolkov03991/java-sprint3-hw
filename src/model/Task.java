@@ -26,10 +26,6 @@ public class Task {
         return duration;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Integer getId() {
         return id;
     }

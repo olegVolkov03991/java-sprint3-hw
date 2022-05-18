@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import model.Status;
 import model.Task;
@@ -14,13 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-class FileBackedTaskManagerTest extends TaskManagerTest {
-    private static final File dbFile = new File("db.txt");
-    private static final String LIE_DELIMITER = ",";
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+    private static final File DB_FILE = new File("db.txt");
+    private static final String LINE_DELIMITER = ",";
     private  final HistoryManager history = Managers.getDefaultHistory();
 
     public FileBackedTaskManagerTest(){
-        super(new FileBackedTaskManager(dbFile));
+        super(Managers.getFileBackedTaskManager(DB_FILE));
     }
 
     @Test
@@ -31,8 +31,8 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
         Task task1 = new Task("task1", "task1", task.getId(), Status.NEW);
         history.add(task1);
         history.add(task1);
-        String save[] = Files.readString(Path.of(String.valueOf(dbFile))).split(LIE_DELIMITER);
-        String task[] = save[sectionTask].split(LIE_DELIMITER);
+        String[] save = Files.readString(Path.of(String.valueOf(DB_FILE))).split(LINE_DELIMITER);
+        String[] task = save[sectionTask].split(LINE_DELIMITER);
         String expectedTaskValue = task1.toString();
         String taskValue = task[taskIndex];
         String expectedHistoryValue = save[sectionHistory];
@@ -43,7 +43,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest {
 
     @Test
     void testFileClear() throws IOException{
-        String savedState[] = Files.readString(Path.of(String.valueOf(dbFile))).split(LIE_DELIMITER);
+        String[] savedState = Files.readString(Path.of(String.valueOf(DB_FILE))).split(LINE_DELIMITER);
         int expectedSize = 0;
         int size = savedState.length;
         Assertions.assertEquals(expectedSize, size, "после удаления" + " файл не пуст");

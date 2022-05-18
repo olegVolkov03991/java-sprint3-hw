@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import service.InMemoryTaskManager;
 
@@ -7,4 +7,3 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
         super(new InMemoryTaskManager());
     }
 }
-

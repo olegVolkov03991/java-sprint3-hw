@@ -11,11 +11,12 @@ import static model.Status.*;
 import static service.Printer.println;
 
 public class InMemoryTaskManager implements TaskManager {
+    private HistoryManager InMemoryHistoryManager = Managers.getDefaultHistory();
     public final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private IdGenerator idGenerator = new IdGenerator();
+    private final IdGenerator idGenerator = new IdGenerator();
 
     @Override
     public List<Task> history() {
@@ -42,12 +43,10 @@ public class InMemoryTaskManager implements TaskManager {
        int numberTask = idGenerator.generateId();
         tasks.put(numberTask, task);
         System.out.println("задача успешно создана");
-
     }
 
     @Override
     public void createEpic(Epic epic) {
-
         int numberEpic = idGenerator.generateId();
         epics.put(numberEpic, epic);
         System.out.println("эпик успешно создан");
@@ -60,7 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTask.setEpicNumber(epic.getId());
         subTasks.put(numberSubTask, subTask);
         epics.get(epic.getId()).updateStartTimeAndDuration();
-        System.out.println("под_задача успешно создана");
+        println("под_задача успешно создана");
 
     }
 
@@ -234,5 +233,8 @@ public class InMemoryTaskManager implements TaskManager {
                 println("Список под_задач" + subTasks + " епика" + epics.get(id));
             }
         }
+    }
+    public HistoryManager getHistoryManager(){
+        return InMemoryHistoryManager;
     }
 }
