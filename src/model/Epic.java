@@ -30,12 +30,10 @@ public class Epic extends Task {
         LocalDateTime lateEndTime = subTasks.get(0).getEndTime();
         if (subTasks.size() > 1) {
             for (int i = 1; i < subTasks.size(); i++) {
-                if (lateEndTime == null)
+                if (lateEndTime == null
+                        && subTasks.get(i).getEndTime() != null
+                        && subTasks.get(i).getEndTime().isAfter(lateEndTime))
                     lateEndTime = subTasks.get(i).getEndTime();
-                else if (subTasks.get(i).getEndTime() != null
-                        && subTasks.get(i).getEndTime().isAfter(lateEndTime)) {
-                    lateEndTime = subTasks.get(i).getEndTime();
-                }
             }
         }
         return lateEndTime;

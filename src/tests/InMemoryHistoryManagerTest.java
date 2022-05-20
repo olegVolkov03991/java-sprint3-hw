@@ -9,6 +9,7 @@ import service.IdGenerator;
 import service.InMemoryHistoryManager;
 
 import java.util.List;
+
 class InMemoryHistoryManagerTest {
     private IdGenerator id = new IdGenerator();
     private static final HistoryManager historyManager = new InMemoryHistoryManager();
