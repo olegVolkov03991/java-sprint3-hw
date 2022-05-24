@@ -12,7 +12,7 @@ import service.TaskManager;
 
 class TaskManagerTest<T extends TaskManager> {
     IdGenerator id = new IdGenerator();
-    private TaskManager manager;
+    TaskManager manager;
 
     public TaskManagerTest(T manager) {
         this.manager = manager;

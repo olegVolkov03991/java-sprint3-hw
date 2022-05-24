@@ -144,6 +144,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
+    protected void saveString(String data){
+        try(var w = new PrintWriter(new FileOutputStream(fileToSave))){
+            w.println(data);
+            w.flush();
+        } catch (IOException e){
+            throw new ManagerSaveException(e.getMessage());
+        }
+    }
+
     private static List<String> historyFromString(String string) {
         return Arrays.asList(string.split(TASK_IN_LINE_DELIMITER));
     }

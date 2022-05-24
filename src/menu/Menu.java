@@ -6,6 +6,8 @@ import model.*;
 import service.IdGenerator;
 import service.TaskManager;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Scanner;
 
 public class Menu {
@@ -14,6 +16,9 @@ public class Menu {
     private TaskManager inMemoryTaskManager = managers.getDefault();
     private HistoryManager historyManager = managers.getDefaultHistory();
     private IdGenerator idGenerator = new IdGenerator();
+
+    public Menu() throws URISyntaxException, IOException, InterruptedException {
+    }
 
     public static void println(String message) {
         System.out.println(message);
