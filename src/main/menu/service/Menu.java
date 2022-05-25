@@ -1,10 +1,10 @@
-package menu;
+package main.menu.service;
 
-import service.HistoryManager;
-import service.Managers;
-import model.*;
-import service.IdGenerator;
-import service.TaskManager;
+import main.menu.service.HistoryManager;
+import main.menu.service.Managers;
+import main.menu.model.*;
+import main.menu.service.IdGenerator;
+import main.menu.service.TaskManager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

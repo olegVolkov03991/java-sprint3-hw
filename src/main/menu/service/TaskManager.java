@@ -1,6 +1,6 @@
-package service;
+package main.menu.service;
 
-import model.*;
+import main.menu.model.*;
 
 import java.util.*;
 

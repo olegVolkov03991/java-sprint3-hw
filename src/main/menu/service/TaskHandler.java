@@ -1,11 +1,11 @@
-package service;
+package main.menu.service;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import model.Epic;
-import model.SubTask;
-import model.Task;
+import main.menu.model.Epic;
+import main.menu.model.SubTask;
+import main.menu.model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,16 +1,16 @@
-package service;
+package main.menu.server;
 
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class HTTPTaskServer {
+public class HttpTaskServer {
     private static final int PORT = 8080;
     HttpServer httpServer;
 
 
-    public HTTPTaskServer() {
+    public HttpTaskServer() {
         try {
             httpServer = HttpServer.create();
             httpServer.bind(new InetSocketAddress(PORT), 0);

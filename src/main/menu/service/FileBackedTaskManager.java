@@ -1,9 +1,8 @@
-package service;
+package main.menu.service;
 
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
+import main.menu.model.Epic;
+import main.menu.model.SubTask;
+import main.menu.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

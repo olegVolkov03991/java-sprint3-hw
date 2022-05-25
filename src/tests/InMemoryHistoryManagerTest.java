@@ -1,12 +1,12 @@
 package tests;
 
-import model.Status;
-import model.Task;
+import main.menu.model.Status;
+import main.menu.model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.HistoryManager;
-import service.IdGenerator;
-import service.InMemoryHistoryManager;
+import main.menu.service.HistoryManager;
+import main.menu.service.IdGenerator;
+import main.menu.service.InMemoryHistoryManager;
 
 import java.util.List;
 

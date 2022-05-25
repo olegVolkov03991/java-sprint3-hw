@@ -1,13 +1,13 @@
 package tests;
 
-import model.Status;
-import model.Task;
+import main.menu.model.Status;
+import main.menu.model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.FileBackedTaskManager;
-import service.HistoryManager;
-import service.Managers;
-import service.IdGenerator;
+import main.menu.service.FileBackedTaskManager;
+import main.menu.service.HistoryManager;
+import main.menu.service.Managers;
+import main.menu.service.IdGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     void testWriteFileBackedManager() throws IOException {
         int sectionTask = 0;
         int taskIndex = 0;
-        Task task1 = new Task("task1", "task1", 1, Status.NEW);
+        Task task1 = new Task("task1", "task1", id.generateId(), Status.NEW);
         history.add(task1);
         history.add(task1);
         String[] save = Files.readString(Path.of(String.valueOf(DB_FILE))).split(LINE_DELIMITER);

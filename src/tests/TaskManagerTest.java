@@ -1,14 +1,14 @@
 package tests;
 
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
+import main.menu.model.Epic;
+import main.menu.model.Status;
+import main.menu.model.SubTask;
+import main.menu.model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.IdGenerator;
-import service.TaskManager;
+import main.menu.service.IdGenerator;
+import main.menu.service.TaskManager;
 
 class TaskManagerTest<T extends TaskManager> {
     IdGenerator id = new IdGenerator();

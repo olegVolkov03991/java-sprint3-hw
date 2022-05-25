@@ -1,4 +1,4 @@
-package model;
+package main.menu.model;
 
 public class SubTask extends Task {
 

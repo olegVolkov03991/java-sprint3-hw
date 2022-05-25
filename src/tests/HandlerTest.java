@@ -2,23 +2,23 @@ package tests;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpServer;
-import model.Status;
-import model.Task;
+import main.menu.model.Status;
+import main.menu.model.Task;
+import main.menu.server.KVServer;
+import main.menu.service.IdGenerator;
+import main.menu.service.TaskHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.IdGenerator;
-import service.KVServer;
-import service.TaskHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.logging.Handler;
 
 public class HandlerTest {
     private HttpClient client;
@@ -26,7 +26,7 @@ public class HandlerTest {
     private HttpServer httpServer;
 
     @BeforeEach
-    void init() throws IndexOutOfBoundsException, InterruptedException, IOException {
+    void init() throws IndexOutOfBoundsException, InterruptedException, IOException, URISyntaxException {
         kvServer = new KVServer();
         kvServer.start();
         httpServer = HttpServer.create();
@@ -38,19 +38,19 @@ public class HandlerTest {
     }
 
     @AfterEach
-    void stop(){
+    void stop() {
         httpServer.stop(1);
         kvServer.stop();
     }
 
-    private Task getTask(){
+    private Task getTask() {
         IdGenerator id = new IdGenerator();
         Task task = new Task("task", "task", id.generateId(), Status.NEW);
         return task;
     }
 
     @Test
-    public void testPostTask() throws IndexOutOfBoundsException, InterruptedException{
+    public void testPostTask() throws IndexOutOfBoundsException, InterruptedException {
         URI url = URI.create("http://localhost:8080/tasks/task/");
         Gson gson = new Gson();
         String json = gson.toJson(getTask());
@@ -63,11 +63,11 @@ public class HandlerTest {
             e.printStackTrace();
         }
 
-        Assertions.assertEquals(200,response.statusCode());
+        Assertions.assertEquals(200, response.statusCode());
     }
 
     @Test
-    public void testDeleteTask() throws IndexOutOfBoundsException, InterruptedException{
+    public void testDeleteTask() throws IndexOutOfBoundsException, InterruptedException {
         URI url = URI.create("http://localhost:8080/tasks/task/");
         Gson gson = new Gson();
         Task task = getTask();
@@ -89,6 +89,6 @@ public class HandlerTest {
             e.printStackTrace();
         }
 
-        Assertions.assertEquals(200,response.statusCode());
+        Assertions.assertEquals(200, response.statusCode());
     }
 }

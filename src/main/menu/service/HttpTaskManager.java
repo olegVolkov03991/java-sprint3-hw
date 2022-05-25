@@ -1,13 +1,15 @@
-package service;
+package main.menu.service;
+
+import main.menu.server.KVTaskClient;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class HTTPTaskManager  extends  FileBackedTaskManager{
+public class HttpTaskManager  extends  FileBackedTaskManager{
 
     private final KVTaskClient kvTaskClient;
 
-    public HTTPTaskManager(String url) throws URISyntaxException, IOException, InterruptedException{
+    public HttpTaskManager(String url) throws URISyntaxException, IOException, InterruptedException{
 
         super(null);
         kvTaskClient = new KVTaskClient(url);

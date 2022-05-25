@@ -1,4 +1,4 @@
-package service;
+package main.menu.server;
 
 import java.io.IOException;
 import java.net.URI;

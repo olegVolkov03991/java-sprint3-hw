@@ -1,4 +1,4 @@
-package service;
+package main.menu.service;
 
 public class IdGenerator {
     private int taskCounter = 0;

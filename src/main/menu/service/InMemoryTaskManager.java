@@ -1,14 +1,14 @@
-package service;
+package main.menu.service;
 
-import model.Task;
-import model.Epic;
-import model.SubTask;
-import model.Status;
+import main.menu.model.Task;
+import main.menu.model.Epic;
+import main.menu.model.SubTask;
+import main.menu.model.Status;
 
 import java.util.*;
 
-import static model.Status.*;
-import static service.Printer.println;
+import static main.menu.model.Status.*;
+import static main.menu.service.Printer.println;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();

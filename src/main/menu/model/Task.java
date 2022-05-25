@@ -1,6 +1,4 @@
-package model;
-
-import service.IdGenerator;
+package main.menu.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

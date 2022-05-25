@@ -1,4 +1,4 @@
-package service;
+package main.menu.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ public class Managers {
 
     public static TaskManager getDefault() throws URISyntaxException, IOException, InterruptedException {
         if (taskManager == null) {
-            taskManager = new HTTPTaskManager("http://localhost:8080");
+            taskManager = new HttpTaskManager("http://localhost:8080");
         }
         return taskManager;
     }

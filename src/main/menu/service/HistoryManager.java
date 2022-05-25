@@ -1,7 +1,7 @@
-package service;
+package main.menu.service;
 
-import model.Node;
-import model.Task;
+import main.menu.model.Node;
+import main.menu.model.Task;
 
 import java.util.List;
 
