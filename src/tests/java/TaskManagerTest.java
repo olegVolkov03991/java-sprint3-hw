@@ -1,52 +1,46 @@
-package tests;
+package tests.java;
 
-import main.menu.model.Epic;
-import main.menu.model.Status;
-import main.menu.model.SubTask;
-import main.menu.model.Task;
+import main.java.model.Epic;
+import main.java.model.Status;
+import main.java.model.SubTask;
+import main.java.model.Task;
+import main.java.service.IdGenerator;
+import main.java.service.InMemoryTaskManager;
+import main.java.service.TaskManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import main.menu.service.IdGenerator;
-import main.menu.service.TaskManager;
 
-class TaskManagerTest<T extends TaskManager> {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class TaskManagerTest{
     IdGenerator id = new IdGenerator();
-    TaskManager manager;
-
-    public TaskManagerTest(T manager) {
-        this.manager = manager;
-    }
-
-    @BeforeEach
-    void createTaskManager() {
-        manager = manager;
-    }
-
-    @Test
-    void history() {
-        Task task = new Task("task", "task", id.generateId(), Status.NEW);
-        manager.createTask(task);
-        manager.getTaskById(task.getId());
-        Task[] expectedHistory = new Task[]{task};
-        Task[] historyTask = manager.history().toArray(Task[]::new);
-        Assertions.assertArrayEquals(expectedHistory, historyTask);
+    TaskManager manager = new InMemoryTaskManager();
+    @AfterEach
+    void afterEach(){
+        manager.deleteAll();
     }
 
     @Test
     void getTasks() {
         Task task = new Task("task", "task", id.generateId(), Status.NEW);
         manager.createTask(task);
-        manager.createTask(task);
-        Assertions.assertEquals(task, manager.getTasks());
+        Map<Integer, Task> test = new HashMap<>();
+        test.put(1 ,task);
+        assertEquals(test, manager.getTasks());
     }
 
     @Test
     void getEpics() {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         manager.createEpic(epic);
-        manager.createEpic(epic);
-        Assertions.assertEquals(epic, manager.getEpics());
+        Map<Integer, Epic> test = new HashMap<>();
+        test.put(1 ,epic);
+        assertEquals(test, manager.getEpics());
     }
 
     @Test
@@ -54,30 +48,23 @@ class TaskManagerTest<T extends TaskManager> {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         SubTask subTask = new SubTask("subTask", "subTask", id.generateId(), Status.NEW);
         manager.createSubTask(subTask, epic);
-        manager.createSubTask(subTask, epic);
-        Assertions.assertEquals(subTask, manager.getSubTasks());
+        Map<Integer, SubTask> test = new HashMap<>();
+        test.put(1 ,subTask);
+        assertEquals(test, manager.getSubTasks());
     }
 
     @Test
     void getTaskById() {
         Task task = new Task("task", "task", id.generateId(), Status.NEW);
         manager.createTask(task);
-        Assertions.assertEquals(task, manager.getTaskById(task.getId()));
+        assertEquals(task, manager.getTaskById(task.getId()));
     }
 
     @Test
     void getEpicById() {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         manager.createEpic(epic);
-        Assertions.assertEquals(epic, manager.getEpicById(epic.getId()));
-    }
-
-    @Test
-    void getSubTaskById() {
-        Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
-        SubTask subTask = new SubTask("subTask", "subTask", id.generateId(), Status.NEW);
-        manager.createSubTask(subTask, epic);
-        Assertions.assertEquals(subTask, manager.getSubTaskById(subTask.getId()));
+        assertEquals(epic, manager.getEpicById(epic.getId()));
     }
 
     @Test
@@ -85,7 +72,7 @@ class TaskManagerTest<T extends TaskManager> {
         Task task = new Task("task", "task", id.generateId(), Status.NEW);
         manager.createTask(task);
         manager.deleteTask();
-        Assertions.assertTrue(manager.getTasks().isEmpty());
+        assertTrue(manager.getTasks().isEmpty());
     }
 
     @Test
@@ -93,7 +80,7 @@ class TaskManagerTest<T extends TaskManager> {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         manager.createEpic(epic);
         manager.deleteEpic();
-        Assertions.assertTrue(manager.getEpics().isEmpty());
+        assertTrue(manager.getEpics().isEmpty());
     }
 
     @Test
@@ -102,7 +89,7 @@ class TaskManagerTest<T extends TaskManager> {
         SubTask subTask = new SubTask("subTask", "subTask", id.generateId(), Status.NEW);
         manager.createSubTask(subTask, epic);
         manager.deleteSubTask();
-        Assertions.assertTrue(manager.getSubTasks().isEmpty());
+        assertEquals(manager.getSubTasks().isEmpty() ,manager.getSubTasks().isEmpty());
     }
 
     @Test
@@ -110,7 +97,7 @@ class TaskManagerTest<T extends TaskManager> {
         Task task = new Task("task", "task", id.generateId(), Status.NEW);
         manager.createTask(task);
         manager.deleteTaskById(task.getId());
-        Assertions.assertTrue(manager.getTasks().isEmpty());
+        assertEquals(manager.getTasks().isEmpty(), manager.getSubTasks().isEmpty());
     }
 
     @Test
@@ -120,7 +107,7 @@ class TaskManagerTest<T extends TaskManager> {
         manager.createEpic(epic);
         manager.createSubTask(subTask, epic);
         manager.deleteEpicById(epic.getId());
-        Assertions.assertTrue(manager.getEpics().isEmpty());
+        assertTrue(manager.getEpics().isEmpty());
     }
 
     @Test
@@ -130,7 +117,7 @@ class TaskManagerTest<T extends TaskManager> {
         manager.createEpic(epic);
         manager.createSubTask(subTask, epic);
         manager.deleteSubTaskById(subTask.getId());
-        Assertions.assertTrue(epic.getListSubTask().isEmpty());
+        assertTrue(epic.getListSubTask().isEmpty());
         Assertions.assertNull(manager.updateSubTaskById(new SubTask("помыться", "вымыться", subTask.getId(), Status.NEW)));
     }
 
@@ -141,16 +128,16 @@ class TaskManagerTest<T extends TaskManager> {
 
         Task expectedTask = new Task("купить кота", "кота купить", task.getId(), Status.NEW);
 
-        Assertions.assertEquals(expectedTask, manager.updateTaskById(new Task("купить кота", "кота купить", task.getId(), Status.NEW)));
+        assertEquals(expectedTask, manager.updateTaskById(expectedTask));
     }
 
     @Test
     void updateEpicById() {
-        Task task = new Task("task", "task", id.generateId(), Status.NEW);
-        manager.createTask(task);
+        Epic epic = new Epic("task", "task", id.generateId(), Status.NEW);
+        manager.createTask(epic);
 
-        Task expectedTask = new Task("купить кота", "кота купить", task.getId(), Status.NEW);
-        Assertions.assertEquals(expectedTask, manager.updateTaskById(new Task("купить кота", "кота купить", task.getId(), Status.NEW)));
+        Task expectedTask = new Task("купить кота", "кота купить", epic.getId(), Status.NEW);
+        assertEquals(expectedTask, manager.updateTaskById(expectedTask));
     }
 
     @Test
@@ -162,41 +149,35 @@ class TaskManagerTest<T extends TaskManager> {
 
         SubTask expectedSubtasks = new SubTask("помыть кота", "кота помыть", subTask.getId(), Status.NEW);
 
-        Assertions.assertEquals(expectedSubtasks, manager.updateSubTaskById(expectedSubtasks), "под_задачи разные");
+        assertEquals(expectedSubtasks, manager.updateSubTaskById(expectedSubtasks));
     }
 
     @Test
     void createEpic() {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         manager.createEpic(epic);
-
-        Epic[] expectedAllEpics = new Epic[]{epic};
-        Epic[] allEpic = manager.getEpics().values().toArray(new Epic[0]);
-
-        Assertions.assertArrayEquals(expectedAllEpics, allEpic, "Массивы не равны");
+        Map<Integer, Epic> test = new HashMap<>();
+        test.put(1, epic);
+        assertEquals(test, manager.getEpics());
     }
 
     @Test
     void createSubTask() {
         Epic epic = new Epic("epic", "epic", id.generateId(), Status.NEW);
         SubTask subTask = new SubTask("subTask", "subTask", id.generateId(), Status.NEW);
-        manager.createEpic(epic);
         manager.createSubTask(subTask, epic);
-
-        SubTask[] expectedAllSubTasks = new SubTask[]{subTask};
-        SubTask[] allSubtasks = manager.getSubTasks().values().toArray(new SubTask[0]);
-
-        Assertions.assertArrayEquals(expectedAllSubTasks, allSubtasks, "Массивы не равны");
+        Map<Integer, SubTask> test = new HashMap<>();
+        test.put(1 ,subTask);
+        assertEquals(test, manager.getSubTasks());
     }
 
     @Test
-    void createTask() {
-        Task task = new Task("task", "task", id.generateId(), Status.NEW);
-        manager.createTask(task);
-
-        Task[] expectedAllTasks = new Task[]{task};
-        Task[] allTask = manager.getTasks().values().toArray(new Task[0]);
-
-        Assertions.assertArrayEquals(expectedAllTasks, allTask, "массивы не равны");
+    void createTask(){
+        Task task1 = new Task("task", "task", 1, Status.NEW);
+        manager.createTask(task1);
+        Map<Integer, Task> test = new HashMap<>();
+        test.put(1 ,task1);
+        List<Task> list = List.of(task1);
+        assertEquals(test, manager.getTasks());
     }
 }

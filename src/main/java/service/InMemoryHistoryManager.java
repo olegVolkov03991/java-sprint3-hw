@@ -1,7 +1,7 @@
-package main.menu.service;
+package main.java.service;
 
-import main.menu.model.Node;
-import main.menu.model.Task;
+import main.java.model.Node;
+import main.java.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

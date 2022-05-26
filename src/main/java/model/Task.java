@@ -1,4 +1,4 @@
-package main.menu.model;
+package main.java.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

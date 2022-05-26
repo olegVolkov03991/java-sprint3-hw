@@ -1,10 +1,9 @@
-package main.menu.service;
+package main.java.service;
 
-import main.menu.service.HistoryManager;
-import main.menu.service.Managers;
-import main.menu.model.*;
-import main.menu.service.IdGenerator;
-import main.menu.service.TaskManager;
+import main.java.model.Epic;
+import main.java.model.Status;
+import main.java.model.SubTask;
+import main.java.model.Task;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

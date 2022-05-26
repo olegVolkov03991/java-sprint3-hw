@@ -1,6 +1,4 @@
-package main.menu.service;
-
-import main.menu.server.KVTaskClient;
+package main.java.service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

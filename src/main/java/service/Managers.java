@@ -1,6 +1,5 @@
-package main.menu.service;
+package main.java.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -17,9 +16,5 @@ public class Managers {
 
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
-    }
-
-    public static FileBackedTaskManager getFileBackedTaskManager(File fname) {
-        return new FileBackedTaskManager(fname);
     }
 }

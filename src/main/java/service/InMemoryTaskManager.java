@@ -1,27 +1,21 @@
-package main.menu.service;
+package main.java.service;
 
-import main.menu.model.Task;
-import main.menu.model.Epic;
-import main.menu.model.SubTask;
-import main.menu.model.Status;
+import main.java.model.Epic;
+import main.java.model.Status;
+import main.java.model.SubTask;
+import main.java.model.Task;
 
 import java.util.*;
 
-import static main.menu.model.Status.*;
-import static main.menu.service.Printer.println;
-
 public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
-    public final Map<Integer, Task> tasks = new HashMap<>();
+    public  Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     protected final Map<Integer, SubTask> subTasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final IdGenerator idGenerator = new IdGenerator();
-
-    @Override
-    public List<Task> history() {
-        return historyManager.getHistory();
-    }
+    private static final HistoryManager historyManager1 = new InMemoryHistoryManager();
+    private IdGenerator id = new IdGenerator();
 
     @Override
     public Map<Integer, Task> getTasks() {
@@ -41,37 +35,36 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void createTask(Task task) {
         int numberTask = idGenerator.generateId();
-        tasks.put(numberTask, task);
+        tasks.put(numberTask ,task);
         System.out.println("задача успешно создана");
     }
 
     @Override
     public void createEpic(Epic epic) {
+        epics.put(id.generateId(), epic);
         int numberEpic = idGenerator.generateId();
         epics.put(numberEpic, epic);
         System.out.println("эпик успешно создан");
     }
 
+
+
     @Override
     public void createSubTask(SubTask subTask, Epic epic) {
-
-        int numberSubTask = idGenerator.generateId();
         subTask.setEpicNumber(epic.getId());
-        subTasks.put(numberSubTask, subTask);
-        epics.get(epic.getId()).updateStartTimeAndDuration();
-        println("под_задача успешно создана");
-
+        subTasks.put(id.generateId(), subTask);
+        Printer.println("под_задача успешно создана");
     }
 
     @Override
     public Task getTaskById(int id) {
         if (tasks.isEmpty()) {
-            println("Список задач пуст");
+            Printer.println("Список задач пуст");
         } else if (!tasks.containsKey(id)) {
-            println("задача:");
+            Printer.println("задача:");
             historyManager.add(tasks.get(id));
         } else {
-            println("Такой задачи нет");
+            Printer.println("Такой задачи нет");
         }
         return tasks.get(id);
     }
@@ -79,12 +72,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpicById(int id) {
         if (epics.isEmpty()) {
-            println("Список эпиков пуст");
+            Printer.println("Список эпиков пуст");
         } else if (epics.containsKey(id)) {
-            println("эпик:");
+            Printer.println("эпик:");
             historyManager.add(epics.get(id));
         } else {
-            println("Такого эпика нет");
+            Printer.println("Такого эпика нет");
         }
         return epics.get(id);
     }
@@ -92,12 +85,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask getSubTaskById(int id) {
         if (subTasks.isEmpty() != false) {
-            println("Список под_задач пуст");
+            Printer.println("Список под_задач пуст");
         } else if (subTasks.containsKey(id)) {
-            println("под_задача:");
+            Printer.println("под_задача:");
             historyManager.add(subTasks.get(id));
         } else {
-            println("Такой под_задачи нет");
+            Printer.println("Такой под_задачи нет");
         }
         return subTasks.get(id);
     }
@@ -105,37 +98,37 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask() {
         tasks.clear();
-        println("Задачи удалены");
+        Printer.println("Задачи удалены");
     }
 
     @Override
     public void deleteEpic() {
-        tasks.clear();
-        println("Эпики уделены");
+        epics.clear();
+        Printer.println("Эпики уделены");
     }
 
     @Override
     public void deleteSubTask() {
-        tasks.clear();
-        println("Под_задачи удалены");
+        subTasks.clear();
+        Printer.println("Под_задачи удалены");
     }
 
     @Override
     public void deleteTaskById(int id) {
         if (tasks.isEmpty()) {
-            println("Список задач пуст");
+            Printer.println("Список задач пуст");
         } else if (tasks.containsKey(id)) {
             tasks.remove(id);
-            println("Задча удалена");
+            Printer.println("Задча удалена");
         } else {
-            println("Такой задачи нет");
+            Printer.println("Такой задачи нет");
         }
     }
 
     @Override
     public void deleteEpicById(int id) {
         if (epics.isEmpty()) {
-            println("Список эпиков пуст");
+            Printer.println("Список эпиков пуст");
         } else if (epics.containsKey(id)) {
             Epic epic = epics.get(id);
             List<SubTask> subTasks = epic.getListSubTask();
@@ -143,51 +136,61 @@ public class InMemoryTaskManager implements TaskManager {
                 subTasks.remove(i);
             }
             epics.remove(id);
-            println("Эпик удален");
+            Printer.println("Эпик удален");
         } else {
-            println("Такого эпика нет");
+            Printer.println("Такого эпика нет");
         }
     }
 
     @Override
     public void deleteSubTaskById(int id) {
         if (subTasks.isEmpty()) {
-            println("Список под_задач пуст");
+            Printer.println("Список под_задач пуст");
         } else if (subTasks.containsKey(id)) {
             subTasks.remove(id);
-            println("Под_задача удалена");
+            Printer.println("Под_задача удалена");
         } else {
-            println("Такой под_задачи нет");
+            Printer.println("Такой под_задачи нет");
         }
+    }
+
+    @Override
+    public void deleteAll(){
+        tasks.clear();
+        epics.clear();
+        subTasks.clear();
     }
 
     @Override
     public Object updateTaskById(Task update) {
         if (tasks.isEmpty()) {
-            println("Список задач пуст");
+            Printer.println("Список задач пуст");
         } else if (tasks.containsKey(update.getId())) {
             tasks.put(update.getId(), update);
-            println("Обновление выполнено");
+            Printer.println("Обновление выполнено");
+            return update;
         } else {
-            println("Такой задачи нет");
+            Printer.println("Такой задачи нет");
         }
         return null;
     }
 
     @Override
-    public void updateEpicById(Epic update) {
+    public Object updateEpicById(Epic update) {
         if (epics.containsKey(update.getId())) {
             Epic epic = epics.get(update.getId());
             update.setStatus(epic.getStatus());
             epics.put(update.getId(), update);
-            println("Обновление выполнено");
+            Printer.println("Обновление выполнено");
+            return update;
         }
+        return null;
     }
 
     @Override
     public Object updateSubTaskById(SubTask update) {
         if (subTasks.isEmpty()) {
-            println("Список под_задач пуст");
+            Printer.println("Список под_задач пуст");
         } else if (subTasks.containsKey(update.getId())) {
             SubTask subTask = subTasks.get(update.getId());
             update.setEpicNumber(subTask.getEpicNumber());
@@ -196,8 +199,9 @@ public class InMemoryTaskManager implements TaskManager {
             Epic epic = epics.get(numEpic);
             List<SubTask> subTasks = epic.getListSubTask();
             epic.setStatus(calculateStatus(subTasks));
+            return update;
         } else {
-            println("Такой под_задачи нет");
+            Printer.println("Такой под_задачи нет");
         }
         return null;
     }
@@ -205,42 +209,42 @@ public class InMemoryTaskManager implements TaskManager {
     public Status calculateStatus(List<SubTask> subTasks1) {
         int statusNEW = 0;
         int statusDone = 0;
-        Status newStatus = NEW;
+        Status newStatus = Status.NEW;
         ArrayList<Status> statuses = new ArrayList<>();
         for (SubTask i : subTasks1) {
             SubTask subTask = subTasks.get(i);
             Status status = subTask.getStatus();
-            if (NEW.equals(status)) {
+            if (Status.NEW.equals(status)) {
                 statusNEW += 1;
             }
-            if (DONE.equals(status)) {
+            if (Status.DONE.equals(status)) {
                 statusDone += 1;
             }
 
             if (statuses.size() == statusNEW) {
                 return newStatus;
             } else if (statuses.size() == statusDone) {
-                newStatus = DONE;
+                newStatus = Status.DONE;
             } else {
-                newStatus = IN_PROGRESS;
+                newStatus = Status.IN_PROGRESS;
             }
         }
-        return IN_PROGRESS;
+        return Status.IN_PROGRESS;
     }
 
     @Override
     public void printEpicSubTask(int id) {
         if (epics.isEmpty()) {
-            println("Список эпиков пуст");
+            Printer.println("Список эпиков пуст");
         } else if (!epics.containsKey(id)) {
-            println("Такой под_задачи в списке епиков нет");
+            Printer.println("Такой под_задачи в списке епиков нет");
         } else {
             Epic epic = epics.get(id);
             List<SubTask> subTasks = epic.getListSubTask();
             if (subTasks.size() == 0) {
-                println("У этого эпика нет под_задач");
+                Printer.println("У этого эпика нет под_задач");
             } else {
-                println("Список под_задач" + subTasks + " епика" + epics.get(id));
+                Printer.println("Список под_задач" + subTasks + " епика" + epics.get(id));
             }
         }
     }

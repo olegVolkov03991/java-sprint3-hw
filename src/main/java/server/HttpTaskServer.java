@@ -1,4 +1,4 @@
-package main.menu.server;
+package main.java.server;
 
 import com.sun.net.httpserver.HttpServer;
 

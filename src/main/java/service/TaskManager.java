@@ -1,12 +1,12 @@
-package main.menu.service;
+package main.java.service;
 
-import main.menu.model.*;
+import main.java.model.Epic;
+import main.java.model.SubTask;
+import main.java.model.Task;
 
 import java.util.*;
 
 public interface TaskManager {
-
-    List<Task> history();
 
     Map<Integer, Task> getTasks();
 
@@ -37,7 +37,7 @@ public interface TaskManager {
 
     Object updateTaskById(Task update);
 
-    void updateEpicById(Epic update);
+    Object updateEpicById(Epic update);
 
     Object updateSubTaskById(SubTask update);
 

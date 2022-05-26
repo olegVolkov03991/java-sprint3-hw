@@ -1,4 +1,4 @@
-package main.menu.model;
+package main.java.model;
 
 public class Node<T> {
 

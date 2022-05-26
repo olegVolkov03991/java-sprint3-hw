@@ -1,14 +1,14 @@
-package main.menu.service;
+package main.java.service;
 
-import main.menu.model.Epic;
-import main.menu.model.SubTask;
-import main.menu.model.Task;
+import main.java.model.Epic;
+import main.java.model.SubTask;
+import main.java.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class FileBackedTaskManager extends InMemoryTaskManager {
+public abstract class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static final String typeSubTask = "subTask";
     public static final String typeTask = "task";
@@ -92,9 +92,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateEpicById(Epic update) {
+    public Object updateEpicById(Epic update) {
         super.updateEpicById(update);
         save();
+        return null;
     }
 
     @Override
@@ -143,16 +144,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    protected void saveString(String data){
-        try(var w = new PrintWriter(new FileOutputStream(fileToSave))){
-            w.println(data);
-            w.flush();
-        } catch (IOException e){
-            throw new ManagerSaveException(e.getMessage());
-        }
-    }
-
     private static List<String> historyFromString(String string) {
         return Arrays.asList(string.split(TASK_IN_LINE_DELIMITER));
     }
+
+    public abstract void saveString(String data);
 }
