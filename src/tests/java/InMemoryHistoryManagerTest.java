@@ -2,11 +2,11 @@ package tests.java;
 
 import main.java.model.Status;
 import main.java.model.Task;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import main.java.service.HistoryManager;
 import main.java.service.IdGenerator;
 import main.java.service.InMemoryHistoryManager;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

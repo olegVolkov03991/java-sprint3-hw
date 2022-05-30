@@ -1,7 +1,5 @@
 package main.java.service;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 public class HttpTaskManager  extends  FileBackedTaskManager{
 
@@ -9,7 +7,6 @@ public class HttpTaskManager  extends  FileBackedTaskManager{
 
     public HttpTaskManager(String url){
 
-       // super(null);
         kvTaskClient = new KVTaskClient("http://localhost:8078");
     }
 

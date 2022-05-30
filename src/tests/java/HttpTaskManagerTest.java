@@ -5,8 +5,6 @@ import main.java.model.Task;
 import main.java.server.KVServer;
 import main.java.service.HttpTaskManager;
 import main.java.service.IdGenerator;
-import main.java.service.InMemoryTaskManager;
-import main.java.service.TaskManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

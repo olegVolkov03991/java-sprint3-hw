@@ -4,14 +4,17 @@ import main.java.model.Epic;
 import main.java.model.Status;
 import main.java.model.SubTask;
 import main.java.model.Task;
-import main.java.service.*;
+import main.java.service.IdGenerator;
+import main.java.service.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 abstract class TaskManagerTest<T extends TaskManager> {
 
