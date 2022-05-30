@@ -32,8 +32,7 @@ public interface TaskManager {
 
     void deleteSubTaskById(int id);
 
-    default void deleteAll() {
-    }
+     void deleteAll();
 
     Object updateTaskById(Task update);
 
@@ -48,4 +47,6 @@ public interface TaskManager {
     void createSubTask(SubTask subTask, Epic epic);
 
     void createTask(Task task);
+
+    List<Task> getHistoryList();
 }

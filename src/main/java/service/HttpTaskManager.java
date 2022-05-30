@@ -7,10 +7,10 @@ public class HttpTaskManager  extends  FileBackedTaskManager{
 
     private final KVTaskClient kvTaskClient;
 
-    public HttpTaskManager(String url) throws URISyntaxException, IOException, InterruptedException{
+    public HttpTaskManager(String url){
 
-        super(null);
-        kvTaskClient = new KVTaskClient(url);
+       // super(null);
+        kvTaskClient = new KVTaskClient("http://localhost:8078");
     }
 
     @Override

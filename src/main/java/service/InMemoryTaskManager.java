@@ -37,6 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
         int numberTask = idGenerator.generateId();
         tasks.put(numberTask ,task);
         System.out.println("задача успешно создана");
+        System.out.println(tasks);
     }
 
     @Override
@@ -44,7 +45,13 @@ public class InMemoryTaskManager implements TaskManager {
         epics.put(id.generateId(), epic);
         int numberEpic = idGenerator.generateId();
         epics.put(numberEpic, epic);
-        System.out.println("эпик успешно создан");
+        if(epics.isEmpty()){
+            System.out.println("ошибка создания");
+        }else {
+            System.out.println("эпик успешно создан");
+            System.out.println(epics);
+        }
+
     }
 
 
@@ -251,5 +258,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     public HistoryManager getHistoryManager() {
         return inMemoryHistoryManager;
+    }
+
+    @Override
+    public List<Task> getHistoryList(){
+        return  historyManager.getHistory();
     }
 }

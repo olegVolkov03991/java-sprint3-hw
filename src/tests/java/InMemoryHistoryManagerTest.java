@@ -16,7 +16,7 @@ class InMemoryHistoryManagerTest {
     private final Task task1 = new Task("task1", "task1", id.generateId(), Status.NEW);
 
     @Test
-    void add() {
+    void testAddTaskInHisory() {
         historyManager.add(task1);
         List<Task> list = List.of(task1);
         Assertions.assertEquals(list, historyManager.getHistory());

@@ -4,22 +4,24 @@ import main.java.model.Epic;
 import main.java.model.Status;
 import main.java.model.SubTask;
 import main.java.model.Task;
-import main.java.service.IdGenerator;
-import main.java.service.InMemoryTaskManager;
-import main.java.service.TaskManager;
+import main.java.service.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskManagerTest{
-    IdGenerator id = new IdGenerator();
-    TaskManager manager = new InMemoryTaskManager();
+abstract class TaskManagerTest<T extends TaskManager> {
+
+   private final IdGenerator id = new IdGenerator();
+    T manager;
+
+    public TaskManagerTest(T manager) {
+        this.manager = manager;
+    }
+
     @AfterEach
     void afterEach(){
         manager.deleteAll();
@@ -173,11 +175,10 @@ class TaskManagerTest{
 
     @Test
     void createTask(){
-        Task task1 = new Task("task", "task", 1, Status.NEW);
-        manager.createTask(task1);
+        Task task = new Task("task", "task", 1, Status.NEW);
+        manager.createTask(task);
         Map<Integer, Task> test = new HashMap<>();
-        test.put(1 ,task1);
-        List<Task> list = List.of(task1);
+        test.put(1 ,task);
         assertEquals(test, manager.getTasks());
     }
 }
